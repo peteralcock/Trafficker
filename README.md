@@ -3,11 +3,7 @@
 
 <hr>
 
-Trafficker is a scalable, API Gateway built using Kong, Pushpin, 
-StatsD, Graphite and Carbon to afford EclecticLabs developers the ability 
-to add highly-available micro-services quickly and easily. 
-Requests routing, authentication, rate limiting, and usage metrics can be instantly applied to any new service with its convenient admin UI.
-<hr><br>
+Scalable requests routing, authentication, rate limiting, and usage metrics can be instantly applied to any new service <hr><br>
 
 
 ## Getting started
