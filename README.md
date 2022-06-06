@@ -3,7 +3,7 @@
 
 <hr>
 
-Scalable requests routing, authentication, rate limiting, and usage metrics can be instantly applied to any new service <hr><br>
+Scalable routing, authentication, rate limiting, and usage metrics for any service<hr><br>
 
 
 ## Getting started
