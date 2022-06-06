@@ -1,0 +1,9 @@
+kong_pg_host: ""
+kong_pg_user: "eclecticLabs"
+kong_pg_database: "routing"
+kong_pg_password: ""
+graphite_pg_host:
+graphite_pg_user: "eclecticLabs"
+graphite_pg_database: "routing"
+graphite_pg_password: ""
+statsd_host: "localhost"

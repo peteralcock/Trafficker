@@ -1,0 +1,382 @@
+#!/bin/bash
+
+#====================================================================
+# Start/stop script for LSC
+# (http://www.lsc-project.org).
+# 
+# chkconfig: 2345 27 73
+# description: LSC
+#
+### BEGIN INIT INFO
+# Provides:          lsc
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Should-Start:      $network $time
+# Should-Stop:       $network $time
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: LSC
+# Description:       SYNC init script provided
+### END INIT INFO
+#
+#                  ==LICENSE NOTICE==
+#
+# Copyright (c) 2008-2013, SYNC Project
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#     * Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+# notice, this list of conditions and the following disclaimer in the 
+# documentation and/or other materials provided with the distribution.
+#     * Neither the name of the SYNC Project nor the names of its
+# contributors may be used to endorse or promote products derived from
+# this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS 
+# IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+# TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+# OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#                  ==LICENSE NOTICE==
+#
+#                (C) 2017 Eclecticlabs Inc.
+#
+#====================================================================
+
+#====================================================================
+# Default parameters (if /etc/default/{script_name} is not present)
+#====================================================================
+# SYNC installation
+SYNC_BIN="/usr/bin/lsc"
+SYNC_CFG_DIR="/etc/lsc"
+SYNC_USER="lsc"
+SYNC_GROUP="lsc"
+SYNC_PID_FILE="/var/run/sync.pid"
+SYNC_TASKS="all"
+SYNC_PARAMS=""
+
+# JMX
+SYNC_JMXPORT=1099
+
+# JAVA
+JAVA_HOME=""
+
+# Script specific
+PROG_NAME=`basename $0 | sed 's/^[KS][0-9][0-9]//'` # For nice messages
+OS=`uname -s`   # To adapt message printing
+MYUID=`id -u`     # For UNIX compatibility => modify this command
+MYGID=`id -g`     # For UNIX compatibility => modify this command
+PS_COMMAND="ps -efww"	# This ensures full width for ps output but doesn't work on Solaris - use "ps -ef"
+NOHUP=`which nohup`
+
+#====================================================================
+# Message function
+#====================================================================
+message() {
+	# $1: syslog level
+	# $2: message
+
+	# Log to syslog
+	logger -p "$1" -t $PROG_NAME -i "$2"
+
+	# Output to console
+	if [ "$1" = "alert" ]
+	then
+		echo "$PROG_NAME: $2">&2
+	else
+		echo "$PROG_NAME: $2">&1
+	fi
+}
+
+#====================================================================
+# Load specific parameters
+#====================================================================
+if [ -f /etc/default/$PROG_NAME ]
+then
+	. /etc/default/$PROG_NAME
+	message "info" "[INFO] Using /etc/default/$PROG_NAME for configuration"
+else
+	message "info" "[INFO] Using built-in configuration - this may cause some problems"
+fi
+
+#====================================================================
+# Initiate 'su' command
+#====================================================================
+if [ "$SYNC_USER" -a $MYUID -eq 0 ]
+then
+	SU="su -s /bin/bash $SYNC_USER -c "
+fi
+
+#====================================================================
+# Initial checks
+#====================================================================
+
+# Make sure the pidfile directory exists with correct permissions
+piddir=`dirname "$SYNC_PID_FILE"`
+if [ ! -d "$piddir" ]; then
+	mkdir -p "$piddir"
+fi
+
+touch $SYNC_PID_FILE
+[ -z "$SYNC_USER" ] || chown -R "$SYNC_USER" "$SYNC_PID_FILE"
+[ -z "$SYNC_GROUP" ] || chgrp -R "$SYNC_GROUP" "$SYNC_PID_FILE"
+
+# Rights to execute binaries
+for i in "$SYNC_BIN" "$NOHUP"
+do
+	if [ ! -x $i ]
+	then
+		message "alert" "[ALERT] Can't execute $i"
+		exit 1
+	fi
+done
+
+# Export JAVA_HOME
+if [ "z" != "z${JAVA_HOME}" ]; then
+	export JAVA_HOME=$JAVA_HOME       
+fi
+
+#====================================================================
+# Functions
+#====================================================================
+start_lsc() {
+
+	# Exit 0 if lsc is already running
+	# LSB compliance
+	lsc_status
+	
+	if [ $? -eq 0 ]
+	then 
+		message "info" "[OK] SYNC is already running"
+		exit 0
+	fi   
+
+	# Start message
+	message "info" "[INFO] Launching LSC..."
+
+	# Export JMX PORT
+	if [ $SYNC_JMXPORT -ne 0 ]
+	then
+		message "info" "[OK] Using SYNC JMX port $SYNC_JMXPORT"
+		export SYNC_JMXPORT=$SYNC_JMXPORT
+	fi
+
+	# SYNC parameters
+	SYNC_PARAMS="-a $SYNC_TASKS -f $SYNC_CFG_DIR $SYNC_PARAMS"
+
+	if [ -z "$SU" ]
+	then
+		$NOHUP $SYNC_BIN $SYNC_PARAMS 1>/dev/null 2>&1 &
+	else
+		$NOHUP $SU "$SYNC_BIN $SYNC_PARAMS" 1>/dev/null 2>&1 &
+	fi
+
+	# Register PID
+	PID=$!
+
+	# Wait for java process to launch
+	for i in `seq 1 60`
+	do
+		SYNC_PID=`ps --ppid $PID -o 'pid='`
+		if [ -z $SYNC_PID ]
+		then
+			message "info" "[INFO] Waiting ${i}s for SYNC java process to launch"
+			sleep 1
+		fi
+	done
+
+	if [ -z $SYNC_PID ]
+	then
+		message "alert" "[ALERT] Unable to launch LSC"
+		exit 1
+	fi
+
+
+	# We get the PID of the java process
+	# which is the direct children if no $SU
+	# or the 2nd children if $SU
+
+	if [ -z "$SU" ]
+	then
+		SYNC_PID=`ps --ppid $PID -o 'pid='`
+	else
+		SYNC_PID=`ps --ppid $PID -o 'pid='`
+		SYNC_PID=`ps --ppid $SYNC_PID -o 'pid='`
+	fi
+
+	message "info" "[OK] Register SYNC PID $SYNC_PID"
+	echo $SYNC_PID > $SYNC_PID_FILE
+
+	# Presence of PID file
+	if [ ! -r $SYNC_PID_FILE ]
+	then
+		message "alert" "[ALERT] No PID file for LSC"
+		exit 1
+	fi
+
+	sleep 2
+
+	# Is SYNC launched?
+	PID=`cat $SYNC_PID_FILE`
+	if [ ! -e /proc/$PID ]
+	then
+		message "alert" "[ALERT] SYNC not running"
+		exit 1
+	else
+		message "info" "[OK] SYNC started"
+	fi
+}
+
+stop_lsc() {
+
+	# Bypas lsc is already stopped
+	lsc_status
+
+	if [ $? -ne 0 ]
+	then 
+		message "info" "[OK] SYNC is already stopped"
+	else  
+
+		# Stop message
+		message "info" "[INFO] Halting LSC..."
+
+		# Presence of PID file
+		if [ ! -r $SYNC_PID_FILE ]
+		then
+			message "error" "[ERROR] Can't read SYNC PID file"
+			return 1
+		else
+			PID=`cat $SYNC_PID_FILE`
+
+			kill $PID
+
+			sleep 2
+
+			if [ -e /proc/$PID ]
+			then
+				message "alert" "[ALERT] SYNC still running"
+				exit 1
+			else
+				message "info" "[OK] SYNC stopped"
+
+			fi
+
+		fi
+
+	fi
+
+}
+
+lsc_status() {
+
+	PID=`cat $SYNC_PID_FILE`
+
+	if [ -z $PID ]
+	then
+		return 1
+	fi
+
+	if [ ! -e /proc/$PID ]
+	then
+		return 1
+	else
+		return 0
+	fi
+}
+
+display_status() {
+
+	# Get status
+	lsc_status
+
+	status=$?
+
+	if [ $status -eq 0 ]
+	then
+		PID=`cat $SYNC_PID_FILE`
+
+		message "info" "[INFO] Process SYNC is running (PID $PID)"
+
+		if [ $SYNC_JMXPORT -ne 0 ]
+		then
+			message "info" "[INFO] Process SYNC is using JMX port $SYNC_JMXPORT"
+		fi
+	fi
+
+	if [ $status -eq 1 ]
+	then
+		message "info" "[INFO] Process SYNC is not running"
+	fi
+
+	if [ $status -eq 2 ]
+	then
+		message "info" "[INFO] Unable to determine SYNC status"
+	fi
+
+	exit $status
+}
+
+configtest() {
+	# Start message
+	message "info" "[INFO] Launching SYNC configuration test..."
+
+	if [ -z "$SU" ]
+	then
+		$SYNC_BIN -v -f $SYNC_CFG_DIR 1>/dev/null 2>&1
+	else
+		$SU "$SYNC_BIN -v -f $SYNC_CFG_DIR 1>/dev/null 2>&1"
+	fi
+
+	if [ $? -eq 0 ]
+	then
+		message "info" "[OK] SYNC configuration test successful"
+	else
+		message "alert" "[ALERT] SYNC configuration test failed"
+		exit 1
+	fi
+}
+
+#====================================================================
+# Action switch
+#====================================================================
+case $1 in
+	start)
+	configtest
+	start_lsc
+	;;
+	stop)
+	stop_lsc
+	;;
+	restart)
+	configtest
+	stop_lsc
+	start_lsc
+	;;
+	status)
+	display_status
+	;;
+	configtest)
+	configtest
+	;;
+	*)
+	echo "Usage: $0 {start|stop|forcestop|restart|status|configtest}"
+	exit 1
+	;;
+esac
+
+#====================================================================
+# Exit
+#====================================================================
+exit 0
+

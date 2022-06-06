@@ -1,0 +1,53 @@
+---
+- name: Install Graphite dependencies
+  shell: "cd /usr/local/src/graphite-web && pip install -r requirements.txt"
+
+- name: Install Graphite Web Application
+  shell: "cd /usr/local/src/graphite-web && python check-dependencies.py && python setup.py install"
+  args:
+    chdir: /usr/local/src/graphite-web
+    creates: /opt/graphite/conf/graphite.wsgi.example
+
+- name: Configure graph template colors
+  copy: src=graphTemplates.conf dest={{ graphite_home }}/conf/graphTemplates.conf
+
+- name: Configure Graphite Web
+  template: src=graphite/webapp/local_settings.py.j2
+            dest={{ graphite_home }}/webapp/graphite/local_settings.py
+  notify:
+    - Restart Apache
+
+- name: Configure Graphite Web WSGI
+  template: src=graphite/conf/graphite.wsgi.j2
+            dest={{ graphite_home }}/conf/graphite.wsgi
+            mode=0755
+  notify:
+    - Restart Apache
+
+- name: Ensure that manage.py is executable
+  file: path="{{ graphite_home }}/webapp/graphite/manage.py"
+        mode=0755
+
+- name: Setup the Graphite Web database
+  django_manage: command=syncdb
+                 app_path="{{ graphite_home }}/webapp/graphite"
+
+- name: Set permissions for storage
+  file: path={{ graphite_home }}/storage
+        mode=0777
+        state=directory
+
+- name: Create Apache log directory
+  file: path={{ graphite_home }}/storage/log/apache2
+        state=directory
+
+- name: Set permissions for Graphite Web logs
+  file: path={{ graphite_home }}/storage/log/webapp
+        mode=0777
+        state=directory
+
+- name: Configure Apache site for Graphite Web
+  template: src=apache/graphite.conf.j2
+            dest=/etc/apache2/sites-available/000-default.conf
+  notify:
+    - Restart Apache

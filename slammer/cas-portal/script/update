@@ -1,0 +1,10 @@
+#!/bin/sh
+
+export RAILS_ENV=production
+
+bundle install --deployment --without development test
+
+bundle exec rake slammer_core:db:migrate
+
+bundle exec rake assets:precompile
+

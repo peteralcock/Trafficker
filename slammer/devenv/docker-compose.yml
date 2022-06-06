@@ -1,0 +1,20 @@
+version: "2"
+services:
+
+  nypd_ldap_admin:
+    image: osixia/phpldapadmin:latest
+    container_name: nypd-admin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "nypd.example.com"
+      PHPLDAPADMIN_HTTPS=false:
+    ports:
+      - "81:80"
+
+  eclecticlabs_ldap_admin:
+    image: osixia/phpldapadmin:latest
+    container_name: eclecticlabs-admin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap.eclecticlabs.com"
+      PHPLDAPADMIN_HTTPS=false:
+    ports:
+      - "82:80"

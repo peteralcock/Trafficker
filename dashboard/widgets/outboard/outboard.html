@@ -1,0 +1,13 @@
+<h1 class="title" data-bind="title"></h1>
+
+<div class="content">
+  <ul>
+    <li data-foreach-value="values" data-bind-class="value.status">
+      <i data-bind-class="value.icon"></i>
+      <span class="name" data-bind="value.name"></span>
+      <span class="comment" data-bind="value.comment"></span>
+    </li>
+  </ul>
+</div>
+
+<p class="updated-at" data-bind="updatedAtMessage"></p>

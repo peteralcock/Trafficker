@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: true
+  sudo: yes
+  roles:
+     - base-ubuntu
+     - python
+     - hosts
+     - users
+     - java
+     - ruby
+     - trafficker
+     - dashboard
+     - supervisor
+     - statsd
+     - graphite

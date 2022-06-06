@@ -1,0 +1,13 @@
+Slammer installation generator
+
+Description:
+    The 'slammer:install' command installs the Slammer Rails Engine into your
+    Rails application.
+
+Example:
+    rails g slammer:install
+
+    This generates a few files inside your application that are required for
+    Slammer to work properly.
+
+    See http://slammer.rbcas.com for more information.

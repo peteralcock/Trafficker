@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-strict-di>
+<head>
+    <meta charset="UTF-8">
+    <title>EclecticLabs | Trafficker</title>
+    <link rel="stylesheet" href="css/app.min.css" >
+</head>
+<body>
+    <app-route-loading-indicator></app-route-loading-indicator>
+
+    <nav class="top_nav fade ng-hide-animate" ng-show="app.config.url">
+        <ul class="left hide-on-med-and-down">
+            <li>
+                <p class="" style="padding-left:10px; padding-top:5px; font-size:10px;">
+                    <img src="https://www.eclecticLabs.com/wp-content/uploads/2016/07/eclecticLabs-logo.png">
+
+                </p>
+
+            </li>
+        </ul>
+        <ul class="right hide-on-med-and-down">
+            <li>
+                <a href="#/">
+                    <i class="material-icons">dashboard</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/apis">
+                    <i class="material-icons">apps</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/consumers">
+                    <i class="material-icons">account_box</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/plugins">
+                    <i class="material-icons">extension</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/config">
+                    <i class="material-icons">settings</i>
+
+                </a>
+            </li>
+        </ul>
+        <ul id="slide-out" class="side-nav">
+            <li>
+                <a href="#/">
+                    <i class="material-icons">home</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/apis">
+                    <i class="material-icons">apps</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/consumers">
+                    <i class="material-icons">account_box</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/plugins">
+                    <i class="material-icons">extension</i>
+
+                </a>
+            </li>
+            <li>
+                <a href="#/config">
+                    <i class="material-icons">settings</i>
+
+                </a>
+            </li>
+        </ul>
+        <a href="#" data-activates="slide-out" class="button-collapse app-slide-out"><i class="material-icons">menu</i></a>
+    </nav>
+
+    <main ng-view ng-show="initialized" ></main>
+    <app-loader ng-hide="initialized"></app-loader>
+
+    <footer ng-show="app.config.url" class="fade ng-hide-animate">
+
+        <div class="container">
+            <p class="grey-text text-lighten-4 right" >
+             </p>
+        </div>
+    </footer>
+
+    <script src="js/app.min.js"></script>
+</body>
+</html>

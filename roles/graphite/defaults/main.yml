@@ -1,0 +1,9 @@
+---
+graphite_carbon_version: "0.9.13-pre1"
+graphite_whisper_version: "0.9.13-pre1"
+graphite_web_version: "0.9.13-pre1"
+
+graphite_home: "/opt/graphite"
+
+graphite_web_port: 8081
+graphite_web_secret_key: "TRAFFICKERSECRETBLAHBLAH"

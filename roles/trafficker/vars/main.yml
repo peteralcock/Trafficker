@@ -1,0 +1,6 @@
+aws_cw_region: "us-east-west-1"
+kong_version: "0.9.3"
+pushpin_version: "1.1.12"
+node_version: "4.4.5"
+ruby_version: "2.2.5"
+kong_database: "postgres"

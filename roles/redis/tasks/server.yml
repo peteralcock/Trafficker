@@ -1,0 +1,17 @@
+- name: include Prod vars
+  include_vars: redis_pass.yml
+
+- name: configure redis-server
+  template: src=redis.conf.j2 dest=/etc/redis.conf
+  tags:
+    - redis-server
+
+- name: make redis a service
+  template: src=redis_init_script.j2 dest=/etc/init.d/redis mode=755
+  tags:
+    - redis-server
+
+- name: run redis
+  service: name=redis enabled=yes state=started
+  tags:
+    - redis-server

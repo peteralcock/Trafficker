@@ -1,0 +1,5 @@
+- include: install.yml
+  when: base_install
+
+- include: configure.yml
+  when: base_configure

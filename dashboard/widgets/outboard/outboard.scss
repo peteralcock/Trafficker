@@ -1,0 +1,56 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  rgba(135, 135, 135, 0.7);
+$title-color:       rgba(255, 255, 255, 0.7);
+$in-color: rgba(255, 255, 255, 1.0);
+$out-color: rgba(175, 175, 175, 1.0);
+$updated-at-color: rgba(255, 255, 255, 0.7);
+
+.widget-outboard {
+  background-color: $background-color;
+
+  .content {
+    text-align: left;
+  }
+
+  .title {
+    color: $title-color;
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+  }
+
+  .updated-at {
+    color: $updated-at-color;
+  }
+
+  &.large h3 {
+    font-size: 65px;
+  }
+
+  li {
+    font-size: 15px;
+    margin-top: 8px;
+    text-indent: 10px;
+    font-weight: normal;
+  }
+
+  .name {
+    font-weight: bold;
+  }
+
+  .comment {
+    font-style: italic;
+  }
+
+  .in {
+    color: $in-color;
+  }
+
+  .out {
+    color: $out-color;
+  }
+
+}

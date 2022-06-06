@@ -1,0 +1,7 @@
+redis_version: 2.8.21
+redis_syslog_enabled: yes
+redis_syslog_ident: redis
+redis_syslog_facility: local0
+redis_appendonly: yes
+redis_slowlog_max_len: 1024
+redis_server: true

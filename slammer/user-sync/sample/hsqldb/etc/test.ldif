@@ -1,0 +1,13 @@
+dn: dc=eclecticlabs,dc=com
+dc: sync-project
+o: SYNC Project
+objectClass: dcObject
+objectClass: top
+description: sync-project naming context
+
+dn: ou=Sample,dc=eclecticlabs,dc=com
+ou: Sample
+objectClass: organizationalUnit
+objectClass: top
+description: Sample subtree
+

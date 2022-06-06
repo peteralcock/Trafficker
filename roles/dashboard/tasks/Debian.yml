@@ -1,0 +1,4 @@
+---
+- name: install the required packages in Debian derivatives
+  apt: name={{ item }} state={{ dashing_pkg_state }}
+  with_items: dashing_pkgs

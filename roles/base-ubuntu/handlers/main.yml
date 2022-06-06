@@ -1,0 +1,6 @@
+- name: restart awslogs
+  sudo: yes
+  service:
+    name: awslogs
+    state: restarted
+    enabled: yes

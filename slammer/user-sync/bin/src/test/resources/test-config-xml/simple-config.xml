@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lsc xmlns="http://lsc-project.org/XSD/lsc-core-2.2.xsd" revision="1">
+	<ldapConnection id="myAdServer">
+		<url>ldap://localhost:1390/dc=AD,dc=net</url>
+		<username>cn=manager,dc=AD,dc=net</username>
+		<password>secret</password>
+		<referral>IGNORE</referral>
+		<derefAliases>NEVER</derefAliases>
+		<factory>com.sun.jndi.ldap.LdapCtxFactory</factory>
+		<version>VERSION_3</version>
+		<authentication>SIMPLE</authentication>
+		<pageSize>10</pageSize>
+		<tlsActivated>true</tlsActivated>
+	</ldapConnection>
+	<databaseConnection id="mySQLDBServer">
+		<url>jdbc:hsqldb:file:hsqldb/lsc</url>
+		<username>elilly</username>
+		<password></password>
+		<driver>org.hsqldb.blabla</driver>
+	</databaseConnection>
+	<csvAudit id="csv">
+		<name>csv</name>
+		<operations>create, delete</operations>
+		<attributes>cn, dn</attributes>
+		<separator>;</separator>
+		<append>true</append>
+		<file>/tmp/log.csv</file>
+	</csvAudit>
+	<ldifAudit id="ldif">
+		<operations>create, delete</operations>
+		<append>false</append>
+		<file>/tmp/log.ldif</file>
+	</ldifAudit>
+
+	<task>
+		<name>myTask</name>
+		<ldapSourceService>
+			<name>myAD-src</name>
+			<connection reference="myAdServer" />
+			<baseDn>ou=people</baseDn>
+			<pivotAttributes>dn, cn</pivotAttributes> 
+			<fetchedAttributes>uid, mail, cn</fetchedAttributes>
+			<dn>'cn=' + srcBean.getAttributeValueById('uid')</dn> 
+			<getAllFilter>(&amp;(objectClass=inetOrgPerson)(uid=*))</getAllFilter>
+			<getOneFilter>(&amp;(objectClass=inetOrgPerson)(uid={uid}))</getOneFilter>
+		</ldapSourceService>
+		<ldapDestinationService>
+			<name>myAD-dst</name>
+			<connection reference="myAdServer"/>
+			<baseDn>ou=contacts</baseDn>
+			<pivotAttributes>dn, cn</pivotAttributes> 
+			<fetchedAttributes>uid, mail, cn</fetchedAttributes>
+			<dn>'cn=' + srcBean.getAttributeValueById('uid')</dn> 
+			<getAllFilter>(&amp;(objectClass=inetOrgPerson)(uid=*))</getAllFilter>
+			<getOneFilter>(&amp;(objectClass=inetOrgPerson)(uid={uid}))</getOneFilter>
+		</ldapDestinationService>
+		<conditions>
+			<create>1 &gt; 0</create>
+			<update>src.getAttr('updateTimeStamp') &gt; dst.getAttr('updateTimeStamp')</update>
+			<delete>false</delete>
+			<changeId>false</changeId>
+		</conditions>
+		<propertiesBasedSyncOptions>
+			<defaultDelimiter>;</defaultDelimiter>
+			<attribute>
+				<name>cn</name> 
+				<createValue>toto</createValue>
+				<defaultValue>toto</defaultValue>
+				<forceValue>toto</forceValue> 
+				<policy>FORCE</policy> <!-- (force|keep|merge) -->
+			</attribute>
+		</propertiesBasedSyncOptions>
+	</task>
+</lsc>

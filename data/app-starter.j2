@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ $(ps aux | grep $USER | grep node | grep -v grep | wc -l | tr -s "\n") -eq 0 ]
+then
+        export NODE_ENV={{ app_env }}
+        export PATH=/usr/local/bin:$PATH
+        forever start /opt/Trafficker/webui/bin/kong-dashboard.js start > /dev/null
+        cd /opt/Trafficker/dashing && dashing start -d
+        sudo kong start
+	    echo '-- BOOTING APPS --'
+fi

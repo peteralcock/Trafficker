@@ -1,0 +1,15 @@
+.DS_Store
+.idea
+.vagrant
+.bundle
+.chef
+.puppet
+cas-portal/log/*
+cas-portal/tmp/*
+target/
+*.log
+auth-proxy/*.log*
+cas-portal/*.log*
+cas-portal/public/assets/
+devenv/ldap/nypd/.vagrant
+devenv/ldap/eclecticlabs/.vagrant

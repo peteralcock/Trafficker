@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Peter Alcock
+  company: EclecticLabs
+  license: Apache
+  min_ansible_version: 1.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+  categories:
+  - system
+  - monitoring
+dependencies:
+  - { role: "trafficker.python", python_development: True }
+  - { role: "trafficker.pip" }
+  - { role: "trafficker.apache2", apache_delete_default_site: True }
+  - { role: "trafficker.git" }
+  - { role: "trafficker.memcached" }

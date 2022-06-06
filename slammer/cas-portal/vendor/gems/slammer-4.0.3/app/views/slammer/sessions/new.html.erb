@@ -1,0 +1,31 @@
+<% login_notice = t('login.notice', default: '') %>
+<div class="container">
+  <% unless login_notice.blank? %>
+  <div class="notice box">
+    <i class="icon-info"></i> <%= login_notice %>
+  </div>
+  <% end %>
+  <div class="login box">
+    <%= render 'messages' %>
+    <div class="logo">
+       <%= image_tag "logo.png" %>
+    </div>
+
+    <div class="form">
+      <%= form_tag(login_path, method: :post, id: 'login-form') do %>
+        <%= hidden_field_tag :lt, Slammer::LoginTicket.create.ticket %>
+        <%= hidden_field_tag :service, params[:service] unless params[:service].nil? %>
+        <%= label_tag :username, t('login.label_username') %>
+        <%= text_field_tag :username, params[:username], autofocus:true %>
+        <%= label_tag :password, t('login.label_password') %>
+        <%= password_field_tag :password %>
+        <%= label_tag :rememberMe do %>
+          <%= check_box_tag :rememberMe, 1, params[:rememberMe] %> <%= t('login.label_remember_me') %>
+        <% end %>
+        <%= button_tag t('login.label_button'), :class => 'button' %>
+      <% end %>
+    </div>
+  </div>
+  <%= render 'footer' %>
+</div>
+

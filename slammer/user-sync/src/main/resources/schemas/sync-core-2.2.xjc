@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	version="2.0">
+
+	<jaxb:bindings schemaLocation="lsc-core-2.2.xsd">
+		<jaxb:schemaBindings>
+			<jaxb:package name="com.eclecticlabs.configuration" />
+		</jaxb:schemaBindings>
+	</jaxb:bindings>
+
+	<jaxb:bindings schemaLocation="lsc-core-2.2.xsd">
+		<jaxb:bindings node="xsd:complexType[@name='serviceType']">
+			<jaxb:bindings node="xsd:sequence">
+				<jaxb:bindings node="xsd:element[@name='connection']">
+					<jaxb:bindings node="xsd:complexType">
+						<jaxb:bindings node="xsd:attribute[@name='reference']">
+							<jaxb:property>
+								<jaxb:baseType name="com.eclecticlabs.configuration.ConnectionType"/>
+							</jaxb:property>
+						</jaxb:bindings>
+					</jaxb:bindings>
+				</jaxb:bindings>
+			</jaxb:bindings>
+		</jaxb:bindings>
+		<jaxb:bindings node="xsd:complexType[@name='taskType']">
+			<jaxb:bindings node="xsd:sequence">
+				<jaxb:bindings node="xsd:element[@name='auditLog']">
+					<jaxb:bindings node="xsd:complexType">
+						<jaxb:bindings node="xsd:attribute[@name='reference']">
+							<jaxb:property>
+								<jaxb:baseType name="com.eclecticlabs.configuration.AuditType"/>
+							</jaxb:property>
+						</jaxb:bindings>
+					</jaxb:bindings>
+				</jaxb:bindings>
+			</jaxb:bindings>
+		</jaxb:bindings>
+		<jaxb:bindings node="xsd:complexType[@name='multiDestinationServiceType']">
+			<jaxb:bindings node="xsd:complexContent">
+				<jaxb:bindings node="xsd:extension">
+					<jaxb:bindings node="xsd:sequence">
+						<jaxb:bindings node="xsd:element[@name='xaServices']">
+							<jaxb:bindings node="xsd:complexType">
+								<jaxb:bindings node="xsd:attribute[@name='reference']">
+									<jaxb:property>
+										<jaxb:baseType name="com.eclecticlabs.configuration.ServiceType"/>
+									</jaxb:property>
+								</jaxb:bindings>
+							</jaxb:bindings>
+						</jaxb:bindings>
+					</jaxb:bindings>
+				</jaxb:bindings>
+			</jaxb:bindings>
+		</jaxb:bindings>
+	</jaxb:bindings>
+</jaxb:bindings>

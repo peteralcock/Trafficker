@@ -1,0 +1,20 @@
+  ##set up config
+- name: Gather EC2 facts
+  local_action: ec2_facts
+  sudo: false
+
+- name: include QA vars
+  include_vars: qa.yml
+  when: "ansible_ec2_security_groups is defined and 'TraffickerQA' in '{{ansible_ec2_security_groups}}'"
+
+- name: include Prod vars
+  include_vars: prod.yml
+  when: "ansible_ec2_security_groups is defined and 'TraffickerRMSProd' in '{{ansible_ec2_security_groups}}'"
+
+- name: include Staging vars
+  include_vars: staging.yml
+  when: "ansible_ec2_security_groups is defined and 'TraffickerStaging' in '{{ansible_ec2_security_groups}}'"
+
+- name: include Training vars
+  include_vars: training.yml
+  when: "ansible_ec2_security_groups is defined and 'TraffickerTraining' in '{{ansible_ec2_security_groups}}'"

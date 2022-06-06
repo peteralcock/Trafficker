@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="twofactor box">
+    <%= render 'messages' %>
+    <div class="info">
+      <h1><%= t('two_factor_authenticators.setup') %></h1>
+      <p>
+        <%= t('two_factor_authenticators.description').html_safe %>
+      </p>
+
+      <p>
+        <%= t('two_factor_authenticators.instructions') %>
+      </p>
+      <div id="qr-code">
+        <img src="<%= otp_qr_code_data_url(@two_factor_authenticator) %>" height="250" width="250"><br />
+      </div>
+      <p id="secret">
+        <%= t('two_factor_authenticators.secret') %>:
+        <a href="<%= otp_auth_url(@two_factor_authenticator) %>">
+          <%= @two_factor_authenticator.secret %>
+        </a>
+      </p>
+    </div>
+
+    <div class="form">
+      <%= form_tag(two_factor_authenticators_path, method: :post, id: 'two_factor_authenticators-form') do %>
+        <%= hidden_field_tag :id, @two_factor_authenticator.id %>
+        <%= label_tag :code, t('two_factor_authenticators.code') %>
+        <%= text_field_tag :otp, nil, maxlength: 6, autofocus: true, autocomplete: 'off' %>
+        <%= link_to t('two_factor_authenticators.cancel'), sessions_path, :class => 'secondary button' %>
+        <%= button_tag t('two_factor_authenticators.submit'), :class => 'button' %>
+      <% end %>
+    </div>
+  </div>
+  <%= render 'footer' %>
+</div>

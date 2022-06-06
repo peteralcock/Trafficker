@@ -1,0 +1,10 @@
+// Place all the behaviors and hooks related to the matching controller here.
+(function(win) {
+  if(!win.Slammer) {
+    win.Slammer = { baseUrl: '<%= Slammer::Engine.routes.url_helpers.root_path %>' };
+  }
+
+  win.Slammer.url = function(path) {
+    return win.Slammer.baseUrl + path;
+  }
+})(this);

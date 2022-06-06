@@ -1,0 +1,32 @@
+- name: restart kong
+  sudo: yes
+  service:
+    name: kong
+    state: restarted
+    enabled: yes
+
+- name: restart pushpin
+  sudo: yes
+  service:
+    name: pushpin
+    state: restarted
+    enabled: yes
+
+
+- name: restart apache2
+  sudo: yes
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+
+
+
+- name: restart supervisor
+  sudo: yes
+  service:
+    name: supervisor
+    state: restarted
+    enabled: yes
+
+

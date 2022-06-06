@@ -1,0 +1,7 @@
+base_newrelic_license_key:
+base_newrelic_environment: Dev
+base_configure: true
+base_install: false
+logs:
+  - messages
+  - secure

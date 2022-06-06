@@ -1,0 +1,8 @@
+---
+dashing_pkg_state: installed
+dashing_gem_state: present
+dashing_service_enable: false
+dashing_path: /opt/Trafficker/
+dashing_name: dashboard
+dashing_port: 3030
+dashing_address: 0.0.0.0

@@ -1,0 +1,59 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:9.4
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - data-postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  kong:
+    image: mashape/kong
+    volumes:
+      - "./data/etc/kong:/etc/kong"
+    ports:
+      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:8001:8001"
+      - "7946:7946"
+      - "7373:7373"
+    links:
+      - postgres:postgres
+    environment:
+      KONG_PG_PASSWORD: 'postgres'
+      KONG_PG_HOST: 'postgres'
+      KONG_PG_DATABASE: 'postgres'
+      KONG_PG_USER: 'postgres'
+  stats:
+    build: ./stats
+    image: trafficker/stats
+    volumes:
+      - "./stats:/opt/statsd"
+    ports:
+      - "80:80"
+      - "2003-2004:2003-2004"
+      - "2023-2024:2023-2024"
+      - "8125:8125/udp"
+      - "8126:8126"
+
+  pushpin:
+    image: fanout/pushpin
+    environment:
+      - "LOGNAME=nobody"
+    ports:
+      - "7999:7999"
+
+  dashboard:
+    build: ./dashboard
+    image: trafficker/dashboard
+    ports:
+      - "3030:3030"
+
+  webui:
+    image: trafficker/webui
+    build: ./webui
+    ports:
+      - "127.0.0.1:8080:8080"
+
+volumes:
+  data-postgres:

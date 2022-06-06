@@ -1,0 +1,6 @@
+---
+- name: Install Whisper
+  command: "python setup.py install"
+  args:
+    chdir: /usr/local/src/whisper
+    creates: /usr/local/bin/whisper-create.py

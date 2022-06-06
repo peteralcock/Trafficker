@@ -1,0 +1,4 @@
+127.0.0.1          localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1                localhost localhost.localdomain localhost6 localhost6.localdomain4
+52.222.30.928      ci.eclecticLabs.io
+192.168.3.28       spinnaker.eclecticLabs.io

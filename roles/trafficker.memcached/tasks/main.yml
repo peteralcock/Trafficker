@@ -1,0 +1,8 @@
+---
+- name: Install Memcached
+  apt: pkg=memcached state=present
+
+- name: Configure Memcached
+  template: src=memcached.conf.j2 dest=/etc/memcached.conf
+  notify:
+    - Restart Memcached

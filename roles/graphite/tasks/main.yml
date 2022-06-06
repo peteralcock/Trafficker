@@ -1,0 +1,22 @@
+---
+- name: Install Graphite dependencies
+  apt: pkg={{ item }} state=present
+  with_items:
+    - libcairo2-dev
+    - libffi-dev
+    - pkg-config
+    - fontconfig
+    - libapache2-mod-wsgi
+
+- name: "Pull down source for Whisper, Carbon, and Graphite Web"
+  git: repo={{ item.repo }}
+       dest=/usr/local/src/{{ item.name }}
+       version={{ item.version }}
+  with_items:
+    - { name: "whisper", repo: "https://github.com/graphite-project/whisper.git", version: "{{ graphite_whisper_version }}" }
+    - { name: "carbon", repo: "https://github.com/graphite-project/carbon.git", version: "{{ graphite_carbon_version }}" }
+    - { name: "graphite-web", repo: "https://github.com/graphite-project/graphite-web.git", version: "{{ graphite_web_version }}" }
+
+- include: whisper.yml
+- include: carbon.yml
+- include: graphite-web.yml

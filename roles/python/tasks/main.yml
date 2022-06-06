@@ -1,0 +1,54 @@
+- name: install python-related packages debian/ubuntu
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - python
+    - python-dev
+    - python-setuptools
+    - python-psycopg2
+    - python-statsd
+    - python-pycurl
+    - python-apt
+  when: ansible_os_family == "Debian"
+
+- name: install python-related packages redhat/centos
+  yum: pkg={{ item }} state=latest
+  with_items:
+    - python
+    - python-devel
+    - python-setuptools
+  when: ansible_os_family == "RedHat"
+
+- name: install pip
+  easy_install: name=pip
+
+- name: install gunicorn
+  pip: name=gunicorn
+
+- name: install Django
+  pip: name=Django==1.4
+
+- name: install python-memcached
+  pip: name=python-memcached==1.47
+
+- name: install simplejson
+  pip: name=simplejson==2.1.6
+
+- name: install django_tagging
+  pip: name=django-tagging==0.3.1
+
+- name: install sphinx
+  pip: name=sphinx
+
+- name: install sphinx_rtd_theme
+  pip: name=sphinx_rtd_theme
+
+- name: install virtualenv
+  pip: name=virtualenv
+
+- name: install virtualenv
+  pip: name=virtualenv
+  with_items:
+    - urllib3
+    - pyopenssl
+    - ndg-httpsclient
+    - pyasn1

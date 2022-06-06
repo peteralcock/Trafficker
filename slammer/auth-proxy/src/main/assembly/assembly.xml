@@ -1,0 +1,32 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+  <id>dist</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <files>
+     <file>
+      <source>target/${project.artifactId}-${project.version}.${project.packaging}</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+    <file>
+      <source>${basedir}/src/main/scripts/run.sh</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+    <file>
+      <source>${basedir}/src/main/scripts/run.bat</source>
+      <outputDirectory>/</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+    <file>
+      <source>${basedir}/src/main/conf/auth.conf</source>
+      <outputDirectory>/conf</outputDirectory>
+    </file>
+    <file>
+      <source>${basedir}/src/main/conf/logging.properties</source>
+      <outputDirectory>/conf</outputDirectory>
+    </file>
+  </files>
+</assembly>

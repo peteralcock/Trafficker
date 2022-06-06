@@ -1,0 +1,29 @@
+lsc (2.1.3-1) unstable; urgency=low
+
+  * Update to 2.1.3
+
+ --  (LTB-project) <clem.swindle@eclecticlabs.com>  Tue, 03 Mar 2015 12:00:00 +0100
+
+lsc (2.1.2-1) unstable; urgency=low
+
+  * Update to 2.1.2
+
+ --  (LTB-project) <clem.swindle@eclecticlabs.com>  Fri, 19 Dec 2014 12:00:00 +0100
+
+lsc (2.1.1-1) unstable; urgency=low
+
+  * Update to 2.1.1
+
+ --  (LTB-project) <clem.swindle@eclecticlabs.com>  Fri, 25 Jul 2014 12:00:00 +0100
+
+lsc (2.1.0-1) unstable; urgency=low
+
+  * Update to 2.1.0
+
+ --  (LTB-project) <clem.swindle@eclecticlabs.com>  Fri, 25 Apr 2014 12:00:00 +0100
+
+lsc (2.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Peter Alcock <Peter@eclecticlabs.com>  Tue, 23 Aug 2011 23:21:31 +0200

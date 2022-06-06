@@ -1,0 +1,71 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color:  teal;
+$value-color:       #fff;
+
+$title-color:       rgba(255, 255, 255, 0.7);
+$label-color:       rgba(255, 255, 255, 0.7);
+$updated-at-color: rgba(212, 212, 212, 0.76);
+
+// ----------------------------------------------------------------------------
+// Widget-jira-list-current-sprint-issues styles
+// ----------------------------------------------------------------------------
+.widget-jira-list-current-sprint-issues {
+
+  background-color: $background-color;
+  vertical-align: top !important;
+
+  .header {
+    color: $label-color;
+    font-size: xx-large;
+    margin-bottom: 0;
+  }
+
+  .status-title {
+    font-size: x-large;
+    padding-bottom: 1vh;
+    color: $label-color;
+  }
+
+  .wrapper {
+    width: 100%;
+    height: auto;
+  }
+
+  .left {
+    display: inline;
+    float: left;
+    width: 4vw;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .right {
+    vertical-align: top;
+    overflow: hidden;
+    padding-left: 0.5vw;
+  }
+
+  .issue-title {
+    font-size: medium;
+    text-align: left;
+  }
+
+  .issue-id {
+    font-size: small;
+  }
+
+  .assignee-name {
+    font-size: small;
+  }
+
+  .list {
+    list-style: none;
+  }
+
+  .updated-at {
+    color: $updated-at-color;
+  }
+
+}

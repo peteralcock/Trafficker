@@ -1,0 +1,56 @@
+---
+ubuntu_flavor: "trusty"
+
+kong_user: "kong"
+kong_group: "{{ kong_user }}"
+kong_working_dir: "/opt"
+kong_source_ver: "0.9.3"
+kong_source_deb: "https://github.com/Mashape/kong/releases/download/{{ kong_source_ver }}/kong-{{ kong_source_ver }}.{{ ubuntu_flavor }}_all.deb"
+kong_conf_dest: "/etc/kong/kong.yml"
+kong_service_state: "started"
+kong_service_enabled: "yes"
+kong_service_pid: "/usr/local/kong/kong.pid"
+kong_service_log_dir: "/var/log/kong"
+kong_dependencies:
+  - netcat
+  - lua5.1
+  - openssl
+  - libpcre3
+  - dnsmasq
+
+kong_conf_plugins_available:
+  - ssl
+  - jwt
+  - acl
+  - cors
+  - oauth2
+  - tcp-log
+  - udp-log
+  - file-log
+  - http-log
+  - key-auth
+  - hmac-auth
+  - basic-auth
+  - ip-restriction
+  - mashape-analytics
+  - request-transformer
+  - response-transformer
+  - request-size-limiting
+  - rate-limiting
+  - response-ratelimiting
+kong_conf_nginx_working_dir: "/usr/local/kong/"
+kong_conf_proxy_port: 8000
+kong_conf_proxy_ssl_port: 8443
+kong_conf_admin_api_port: 8001
+kong_conf_dnsmasq_port: 8053
+kong_conf_database: "postgres"
+kong_conf_databases_available:
+  postgres:
+    properties:
+      username: postgres
+      password: postgres
+      database: postgres
+      host: localhost
+kong_conf_database_cache_expiration: 5
+kong_conf_send_anonymous_reports: true
+kong_conf_memory_cache_size: 128

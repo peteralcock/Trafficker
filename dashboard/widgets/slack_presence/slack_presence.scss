@@ -1,0 +1,65 @@
+// ----------------------------------------------------------------------------
+// Sass declarations
+// ----------------------------------------------------------------------------
+$background-color-active: rgb(40, 185, 61);
+$background-color-away: rgb(27, 91, 204);
+$background-color-dnd: rgb(249, 46, 25);
+$background-color-offline: rgb(146, 146, 146);
+
+$label-color:       rgba(255, 255, 255, 0.7);
+$label-small-color: rgba(222, 222, 222, 0.70);
+
+// ----------------------------------------------------------------------------
+// Widget-slack_presence styles
+// ----------------------------------------------------------------------------
+.widget-slack-presence {
+
+  background-color: $background-color-offline;
+  vertical-align: top;
+
+  .userinfo {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+
+    img {
+      border-radius: 10px;
+      margin: 5px;
+    }
+
+    .presence_message {
+      margin-top: 15px;
+    }
+
+  }
+
+  .label {
+    text-align: center;
+    display: block;
+    color: $label-color;
+    font-size: 24px;
+    word-wrap: break-word;
+
+    &.small {
+      font-size: 18px;
+      color: $label-small-color;
+    }
+  }
+
+
+  &.status-active{
+    background-color: $background-color-active;
+  }
+
+  &.status-away {
+    background-color: $background-color-away;
+  }
+
+  &.status-dnd {
+    background-color: $background-color-dnd;
+  }
+
+  &.status-offline {
+    background-color: $background-color-offline;
+  }
+}

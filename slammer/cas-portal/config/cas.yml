@@ -1,0 +1,39 @@
+production:
+  frontend:
+    sso_name: 'Slammer'
+    footer_text: 'Powered by <a href="http://github.com/eclecticlabs/slammer/">Slammer</a>'
+  authenticators:
+
+########################################
+# LDAP
+########################################
+#    my_company_ldap:
+#      authenticator: 'LDAP'
+#      options:
+#        host: 'localhost'
+#        port: 636
+#        base: 'ou=people,dc=eclecticlabs,dc=com'
+#        username_attribute: 'uid'
+#        encryption: 'simple_tls'
+#        extra_attributes:
+#          email: 'mail'
+#          fullname: 'displayname'
+
+########################################
+# SQL (ActiveRecord authenticator)
+########################################
+#    eclecticlabs_sql_database:
+#      authenticator: "ActiveRecord"
+#      options:
+#        connection:
+#          adapter: "mysql2"
+#          host: "localhost"
+#          username: "slammer"
+#          password: "secret"
+#          database: "users"
+#        table: "users"
+#        username_column: "username"
+#        password_column: "password"
+#        extra_attributes:
+#          email: "email_database_column"
+#          fullname: "displayname_database_column"

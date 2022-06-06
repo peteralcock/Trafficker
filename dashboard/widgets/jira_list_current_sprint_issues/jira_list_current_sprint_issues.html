@@ -1,0 +1,17 @@
+<h1 class="header" data-bind="header"></h1>
+<h2 class="status-title" data-bind="issue_type"></h2>
+
+<div class="list">
+	<div data-foreach-issue="issues" class="wrapper">
+		<div class="left">
+			<img class="assignee-avatar" data-bind-src="issue.assigneeAvatarUrl" alt="Assignee Avatar" src="">
+			<div class="assignee-name" data-bind="issue.assigneeName"></div>
+		</div>
+		<div class="right">
+			<div class="issue-title" data-bind="issue.title"></div>
+			<div class="issue-id" data-bind="issue.id"></div>
+		</div>
+		<div style="clear: both; padding-bottom: 1vh;"></div>
+	</div>
+</div>
+<p class="updated-at" data-bind="updatedAtMessage"></p>

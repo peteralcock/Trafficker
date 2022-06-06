@@ -1,0 +1,12 @@
+[Unit]
+Description=Configure Base
+Before=newrelic-sysmond.service newrelic-sysmond.timer
+
+[Service]
+ExecStart=/bin/bash -c "source /tmp/passwordExport; /bin/ansible-playbook /tmp/playbooks/config/base.yml -i 'localhost' --vault-password-file=roles/ansible-vault-password.py"
+Type=oneshot
+User=root
+WorkingDirectory=/tmp
+
+[Install]
+WantedBy=multi-user.target 

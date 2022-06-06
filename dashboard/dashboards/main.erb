@@ -1,0 +1,61 @@
+<% content_for :title do %> EclecticLabs | Trafficker <% end %>
+
+<div class="gridster">
+  <ul>
+
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="clients" data-view="List" data-unordered="true" data-title="Clients" data-moreinfo="# of active users"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="connections" data-view="Number" data-title="Queries" data-moreinfo="# of API calls" data-prefix="+"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="traffic" data-view="Graph" data-title="Traffic" style="background-color:#ff9618"></div>
+    </li>
+
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="load" data-view="Meter" data-title="Memory" data-height="200" data-width="200" data-min="0" data-max="100" data-suffix="%"></div>
+    </li>
+
+
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-view="Gauge" data-metric="stats.gauges.kong.Blog.latency"
+           data-title="Latency" data-graphite_host="http://qaapi.eclecticLabs.io:8081" data-unit="ms" data-colors="0:#96bf48,100:#ff9618,500:#d26771"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-view="Timer" data-metric="stats.gauges.kong.ElasticSearch.request.size"
+           data-title="Requests" data-graphite_host="http://qaapi.eclecticLabs.io:8081"
+           data-unit="Kb"></div>
+    </li>
+
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="weather" data-view="Weather"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
+      <div data-id="mta" data-view="Mta"></div>
+    </li>
+
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+      <div data-id="news" data-view="News"></div>
+    </li>
+
+    <% if ENV['GRAPHITE_ROCKS'] %>
+
+    <li data-row="1" data-col="1" data-sizex="4" data-sizey="1">
+      <div data-view="Graphite" data-image="http://qaapi.eclecticLabs.io:8081/render?from=-2hours&amp;width=500&amp;height=400&amp;target=stats.gauges.kong.Blog.latency&amp;_uniq=0.11581272282637656" data-interval="30000"></div>
+    </li>
+
+
+     <% end %>
+
+
+  </ul>
+</div>

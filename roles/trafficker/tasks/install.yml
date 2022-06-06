@@ -1,0 +1,42 @@
+
+- name: copy kong config files
+  template:
+    src: kong/kong.conf.j2
+    dest: /etc/kong/kong.conf
+    mode: 0600
+  notify: restart kong
+
+- name: copy pushpin config files
+  template:
+    src: pushpin/routes.j2
+    dest: /etc/pushpin/routes
+    mode: 0600
+
+- name: start kong proxy service
+- service:
+    name: kong
+    enabled: yes
+    state: started
+
+- name: start pushpin proxy service
+- service:
+    name: pushpin
+    enabled: yes
+    state: started
+
+
+- name: start supervisor
+- service:
+    name: supervisor
+    enabled: yes
+    state: started
+
+- name: copy application start scripts
+  template:
+    src: data/app-starter.j2
+    dest: /root/app-starter.sh
+    mode: 0775
+
+- name: run application start scripts
+  shell: /root/app-starter.sh
+

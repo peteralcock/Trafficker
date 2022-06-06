@@ -1,0 +1,65 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          dashboard
+# Required-Start:    $network $syslog
+# Required-Stop:     $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start daemon dashboard
+# Description:       Start daemon dashboard
+### END INIT INFO
+
+PATH=/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin
+PREFIX=/usr/local
+
+. /lib/lsb/init-functions
+
+NAME=dashboard
+DESC="trafficker analytics dashboard"
+DAEMON=$PREFIX/bin/$NAME
+
+if [ -f $PREFIX/etc/default/$NAME ]; then
+  . $PREFIX/etc/default/$NAME
+fi
+
+test -x $DAEMON || exit 5
+
+GEM_HOME={{ dashing_gem_home }}
+DASHING_DIR={{ dashing_path }}/{{ dashing_name }}
+DASHING_DIR=/opt/Trafficker/dashboard
+
+PORT={{ dashing_port }}
+ADDRESS={{ dashing_address }}
+
+PIDFILE="/var/run/$NAME.pid"
+LOGFILE=/var/log/dashboard
+RUNUSER={{ dashing_user }}
+RUNGROUP={{ dashing_group }}
+
+# see thin --help
+DAEMON_OPTS="start --quiet --daemonize --user $RUNUSER --group $RUNGROUP --pid $PIDFILE --port $PORT --address $ADDRESS --tag $NAME --log $LOGFILE --environment production"
+
+case "$1" in
+  start)
+    log_action_msg "Starting daemon" $NAME
+    start-stop-daemon --quiet --pidfile $PIDFILE --start --chdir $DASHING_DIR --exec $DAEMON -- $DAEMON_OPTS
+    log_end_msg $?
+  ;;
+  stop)
+    log_action_msg "Stopping daemon:" $NAME
+    start-stop-daemon --quiet --pidfile $PIDFILE --stop --user $RUNUSER --retry 30
+    log_end_msg $?
+  ;;
+  restart)
+    log_action_msg "Restarting daemon:" $NAME
+    $0 stop && sleep 2 && $0 start
+  ;;
+  status)
+    status_of_proc -p $PIDFILE $DAEMON $NAME
+  ;;
+  *)
+  echo "Usage: "$1" {start|stop|restart|status}"
+  exit 1
+esac
+
+exit 0

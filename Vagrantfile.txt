@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+     config.vm.provider :aws do |aws, override|
+       config.vm.box = "dummy"
+       config.vm.synced_folder ".", "/vagrant", disabled: true
+       aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
+       aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+       aws.region = 'us-east-west-1'
+       aws.keypair_name = 'peter'
+       aws.region_config "us-east-west-1", :ami => "ami-36c07857"
+       aws.instance_type = 'm4.large'
+       aws.elastic_ip = '52.222.29.215'
+       aws.subnet_id = 'subnet-4d318428'
+       aws.security_groups = ['sg-df4efbba', 'sg-4549fc20', 'sg-b14efbd4', 'sg-d63782b3', 'sg-c719e0a2']
+       aws.ami = 'ami-36c07857'
+       aws.ssh_host_attribute = :public_ip_address
+       override.ssh.pty = true
+       override.ssh.username = 'ubuntu'
+       override.ssh.private_key_path = '/Users/peteralcock/.ssh/peter.pem'
+    end
+
+    config.vm.provision "ansible" do |ansible|
+       ansible.verbose = true
+       ansible.playbook = 'playbook.yml'
+    end
+
+end
+

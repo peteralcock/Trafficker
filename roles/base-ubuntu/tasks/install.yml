@@ -1,0 +1,62 @@
+
+- name: install packages
+  apt: name={{ item }} state=latest
+  with_items:
+    - gcc
+    - python-pip
+    - python-dev
+    - libffi-dev
+    - libssl-dev
+    - wget
+    - ncdu
+    - htop
+    - vim
+    - ntp
+
+- name: install python packages
+  pip: name={{ item }}
+  with_items:
+    - setuptools
+    - ansible
+    - awscli
+    - boto
+    - httplib2
+    - boto3
+
+- service:
+    name: ntp
+    enabled: yes
+    state: started
+
+#AWS CloudWatch Agent
+- name: download cloudwatch agent
+  get_url:
+    url: "{{ aws_cw_agent_url }}"
+    dest: /tmp/awslogs-agent-setup.py
+
+- name: install cloudwatch agent service
+  command: "python /tmp/awslogs-agent-setup.py --non-interactive --region {{ aws_cw_region }} -c {{ aws_cw_conf_dir }}/{{ aws_cw_conf_file }}"
+  args:
+    creates: "{{ aws_cw_conf_dir }}/{{ aws_cw_agent_conf_file }}"
+
+- name: Swap awslogs.conf with our templated version
+  template:
+    src: aws/awslogs.conf.j2
+    dest: "{{ aws_cw_conf_dir }}/{{ aws_cw_agent_conf_file }}"
+    mode: 0600
+  notify: restart awslogs
+
+- name: Swap aws.conf with our templated version
+  template:
+    src: aws/aws.conf.j2
+    dest: "{{ aws_cw_conf_dir }}/{{ aws_cw_conf_file }}"
+    mode: 0600
+  notify: restart awslogs
+
+- name: copy awslogs base config files
+  template:
+    src: awslogs/{{item}}.conf.j2
+    dest: /var/awslogs/etc/config/{{item}}.conf
+    mode: 0600
+  with_items: "{{logs}}"
+  notify: restart awslogs

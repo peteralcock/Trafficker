@@ -1,0 +1,7 @@
+hosts:
+  web: sso.eclecticlabs.com
+  app: sso.eclecticlabs.com
+  db: sso.eclecticlabs.com
+repository: http://github.com/eclecticlabs/slammer.git
+user: deploy
+deploy_to: /var/www/apps/SlammerApp

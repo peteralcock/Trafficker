@@ -1,0 +1,6 @@
+aws_cw_agent_url: https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
+aws_cw_conf_dir: "/var/awslogs/etc"
+aws_cw_logconf_dir: "{{aws_cw_conf_dir}}/config"
+aws_cw_agent_conf_file: "awslogs.conf"
+aws_cw_conf_file: "aws.conf"
+aws_cw_region: "us-east-west-1"

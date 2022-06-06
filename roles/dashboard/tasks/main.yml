@@ -1,0 +1,5 @@
+---
+- name: add the OS specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+  tags: [ configuration, packages, service, dashboard ]
+

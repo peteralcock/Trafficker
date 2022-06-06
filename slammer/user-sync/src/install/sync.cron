@@ -1,0 +1,5 @@
+#
+# Regular cron jobs for the SlammerSync
+#
+
+30 * * * * root [ -x #SYNC_BIN# ] && #SYNC_BIN# -s all -c all > /dev/null 2>&1

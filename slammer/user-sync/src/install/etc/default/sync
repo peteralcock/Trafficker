@@ -1,0 +1,19 @@
+#====================================================================
+# Configuration for SYNC init script
+# (http://www.lsc-project.org).
+#====================================================================
+
+# SYNC installation
+SYNC_BIN="/usr/local/sync/bin/lsc"
+SYNC_CFG_DIR="/usr/local/sync/etc"
+SYNC_USER=""
+SYNC_GROUP=""
+SYNC_PID_FILE="/var/run/sync.pid"
+SYNC_TASKS="all"
+SYNC_PARAMS=""
+
+# JMX
+SYNC_JMXPORT="1099"
+
+# JAVA
+#JAVA_HOME=/usr/java/jdk/jre

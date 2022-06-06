@@ -1,0 +1,81 @@
+- name: update apt package cache
+  apt: update_cache=yes
+  when: ansible_os_family == "Debian"
+
+- name: install common packages debian/ubuntu
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - python
+    - python-dev
+    - python-pip
+    - build-essential
+    - git
+    - libffi-dev
+    - ntp
+    - make
+    - cmake
+    - g++
+    - debhelper
+    - devscripts
+    - netcat
+    - openssl
+    - libpcre3
+    - dnsmasq
+    - procps
+    - libssl-dev
+    - libyaml-dev
+    - libreadline-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - libicu-dev
+    - libkrb5-dev
+    - libcurl4-gnutls-dev
+    - libqt4-dev
+    - zlib1g-dev
+    - dh-systemd
+    - autotools-dev
+    - apt-transport-https
+    - software-properties-common
+  when: ansible_os_family == "Debian"
+
+- name: install common packages redhat/centos
+  yum: pkg={{ item }} state=latest
+  with_items:
+    - git
+    - ntp
+    - make
+    - cmake
+    - pcre-devel
+    - automake
+    - gcc
+    - gcc-c++
+    - kernel-devel
+    - dnsmasq
+    - procps
+    - libxml2-devel
+    - libxslt-devel
+    - python-devel
+    - libicu-devel
+    - libffi-devel
+    - krb5-devel
+    - qt4-devel
+    - zlib-devel
+  when: ansible_os_family == "RedHat"
+
+
+- name: Creates .ssh directory for root
+  sudo: yes
+  file: path=/root/.ssh state=directory
+
+# This public key is set on Github repo Settings under "Deploy keys"
+- name: Upload the private key used for Github cloning
+  sudo: yes
+  copy: src=private/keys/id_rsa dest=/root/.ssh/id_rsa
+
+- name: Correct SSH deploy key permissions
+  sudo: yes
+  file: dest=/root/.ssh/id_rsa mode=0600
+
+- name: Deploy site files from Github repository
+  sudo: yes
+  git: repo=git@github.com:eclecticLabs/Trafficker.git dest=/opt/Trafficker key_file=/root/.ssh/id_rsa accept_hostkey=yes force=yes

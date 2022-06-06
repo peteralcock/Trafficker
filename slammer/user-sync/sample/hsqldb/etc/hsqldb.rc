@@ -1,0 +1,4 @@
+urlid lscdb
+url jdbc:hsqldb:file:/tmp/sync/hsqldb/lsc
+username sa
+password

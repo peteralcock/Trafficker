@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Peter Alcock
+  description: Trafficker Analytic Dashboard
+  company: EclecticLabs Inc.
+  min_ansible_version: 1.4
+  platforms:
+  - name: Ubuntu
+    versions:
+    - xenial
+    - trusty
+  categories:
+  - monitoring
+  - web
+dependencies: []

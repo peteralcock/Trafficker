@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+gem 'json'
+gem 'therubyracer', :platforms => :ruby
+gem 'nokogiri'
+gem 'httparty'
+gem 'simple-rss'
+gem 'rest-client'
+gem 'graphite'
+gem 'dashing'
+gem "sinatra-cross_origin", "~> 0.3.1"
+gem 'slack-api'
+gem 'xml-simple'

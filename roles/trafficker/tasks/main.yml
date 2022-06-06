@@ -1,0 +1,64 @@
+- name: update apt package cache
+  apt: update_cache=yes
+  when: ansible_os_family == "Debian"
+
+- name: install common packages debian/ubuntu
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - python
+    - python-dev
+    - python-pip
+    - build-essential
+    - git
+    - libffi-dev
+    - ntp
+    - make
+    - cmake
+    - g++
+    - debhelper
+    - devscripts
+    - netcat
+    - openssl
+    - libpcre3
+    - dnsmasq
+    - procps
+    - libssl-dev
+    - libyaml-dev
+    - libreadline-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - libicu-dev
+    - libkrb5-dev
+    - libcurl4-gnutls-dev
+    - libqt4-dev
+    - zlib1g-dev
+    - dh-systemd
+    - autotools-dev
+    - apt-transport-https
+    - software-properties-common
+  when: ansible_os_family == "Debian"
+
+
+- name: Creates .ssh directory for root
+  sudo: yes
+  file: path=/root/.ssh state=directory
+
+- name: Upload the private key used for Github cloning
+  sudo: yes
+  copy: src=private/keys/id_rsa dest=/root/.ssh/id_rsa
+
+- name: Correct SSH deploy key permissions
+  sudo: yes
+  file: dest=/root/.ssh/id_rsa mode=0600
+
+- name: Deploy site files from Github repository
+  sudo: yes
+  git: repo=git@github.com:eclecticLabs/Trafficker.git dest=/opt/Trafficker key_file=/root/.ssh/id_rsa accept_hostkey=yes force=yes
+
+- name: Creates tmp directory for dashboard
+  sudo: yes
+  file: path=/opt/Trafficker/dashboard/tmp state=directory mode=0777
+
+- name: Creates log directory for dashboard
+  sudo: yes
+  file: path=/opt/Trafficker/dashboard/log state=directory mode=0777

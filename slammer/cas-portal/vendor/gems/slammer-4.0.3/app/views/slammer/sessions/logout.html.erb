@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="logout box">
+
+    <div class="info">
+      <h1><%= t('logout.title') %></h1>
+      <p>
+        <% if @url.nil? %>
+          <%= t('logout.logged_out_without_url') %>
+        <% else %>
+          <%= t('logout.logged_out_with_url') %> <a href="<%= @url %>"><%= @url %></a>
+        <% end %>
+      </p>
+    </div>
+    <div class="logo">
+      <%= image_tag "logo.png" %>
+    </div>
+  </div>
+  <%= render 'footer' %>
+</div>

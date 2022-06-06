@@ -1,0 +1,16 @@
+---
+
+#
+# variables needed to be defined in user's playbook
+#
+
+
+
+#
+# user-configurable defaults
+#
+
+java_version: 8
+java_subversion: 72
+
+jdk_download_path: /tmp

@@ -1,0 +1,19 @@
+Source: lsc
+Section: java
+Priority: optional
+Maintainer:  <clem.swindle@eclecticlabs.com>
+Build-Depends: debhelper (>> 7)
+Standards-Version: 3.9.5
+Homepage: http://lsc-project.org/
+Vcs-Svn: https://lsc-project.org/svn/
+Vcs-Browser: http://tools.lsc-project.org/repositories/show/lsc
+
+Package: lsc
+Architecture: all
+Depends: ${misc:Depends}
+Description: SlammerSync
+ SYNC offers a powerful transformation engine, based on a scripting language,
+ to easily manipulate data on the fly. Various identity management functions 
+ are included for directory-specific compatibility - most notably Active Directory
+ (changing passwords, account status, last logon, etc ...). SYNC is an open source
+ project written in Java, available under the BSD license.

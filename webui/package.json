@@ -1,0 +1,27 @@
+{
+  "name": "Trafficker",
+  "description": "API Management System",
+  "keywords": "API, EclecticLabs, Trafficker",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclecticLabs/Trafficker"
+  },
+  "dependencies": {
+    "bower": "~1.6.5",
+    "fs-extra": "^0.26.2",
+    "glob": "^6.0.1",
+    "minimist": "^1.2.0",
+    "node-sass": "^3.4.2",
+    "rimraf": "^2.4.4",
+    "serve": "^1.4.0",
+    "uglify-js": "^2.6.1"
+  },
+  "bin": {
+    "kong-dashboard": "./bin/kong-dashboard.js"
+  },
+  "scripts": {
+    "install": "node ./bin/kong-dashboard build",
+    "start": "node ./bin/kong-dashboard start"
+  }
+}

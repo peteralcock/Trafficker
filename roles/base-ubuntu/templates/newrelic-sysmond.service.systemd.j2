@@ -1,0 +1,8 @@
+[Unit]
+Description=NewRelic service
+
+[Service]
+ExecStart=/usr/sbin/nrsysmond -c /etc/newrelic/nrsysmond.cfg -f
+PIDFile=/var/run/newrelic/newrelic-daemon.pid
+User=newrelic
+Group=newrelic

@@ -1,0 +1,6 @@
+---
+- name: Ensure apt-transport-https is installed.
+  apt: name=apt-transport-https state=present
+
+- name: Ensure Node.js and npm are installed.
+  apt: "name=nodejs state=present"

@@ -1,0 +1,4 @@
+*,proto=ws,ssl=yes localhost:9443
+*,proto=ws localhost:9000
+*,ssl=yes localhost:8443
+* localhost:8000
